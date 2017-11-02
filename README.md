@@ -4,13 +4,13 @@
 
 The easy way
 
-    install.packages("acumos",,c("http://r.research.att.com","http://rforge.net"))
+    install.packages("acumos",repos=c("http://r.research.att.com","http://rforge.net"), dep=T)
 
 From sources: you have to install all dependent packages from CRAN first then
 
     git clone git@github.com:s-u/acumos.git
     R CMD build acumos
-    R CMD INSTALL acumos_0.1-0.tar.gz
+    R CMD INSTALL acumos_0.2-0.tar.gz
 
 ## Usage
 
