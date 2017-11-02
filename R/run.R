@@ -109,7 +109,7 @@ run <- function(where=getwd(), file="component.amc", runtime="runtime.json") {
     .dinfo(1L, "INFO: starting component in '", where,"', archive:", file, ", runtime:", runtime)
     dir <- tempfile("acumos-runtime")
     dir.create(dir)
-    # on.exit(unlink(dir, TRUE))
+    on.exit(unlink(dir, TRUE))
     unzip(file, exdir=dir)
     metadata <- file.path(dir, "meta.json")
     payload <- file.path(dir, "component.bin")
