@@ -1,0 +1,9 @@
+Package: acumos
+Title: Acumos R interface
+Version: 0.2-0
+Author: Simon Urbanek <urbanek@research.att.com>
+Maintainer: Simon Urbanek <urbanek@research.att.com>
+Description: Functions to create and run Acumos models
+License: TBD
+Imports: httr, jsonlite, RProtoBuf, Rserve
+Suggests: randomForest
