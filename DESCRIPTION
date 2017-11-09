@@ -1,6 +1,6 @@
 Package: acumos
 Title: Acumos R interface
-Version: 0.2-0
+Version: 0.2-1
 Author: Simon Urbanek <urbanek@research.att.com>
 Maintainer: Simon Urbanek <urbanek@research.att.com>
 Description: Functions to create and run Acumos models

@@ -1,4 +1,4 @@
 importFrom("stats", "na.omit")
 importFrom("utils", "capture.output", "str", "unzip", "zip", "installed.packages", "packageDescription")
 import(httr)
-export(compose, push)
+export(compose, push, auth)

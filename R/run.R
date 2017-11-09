@@ -220,13 +220,26 @@ acumos.http <- function(path, query, body, headers) {
     }, error=function(e) paste("ERROR: in execution: ", as.character(e)))
 }
 
-push <- function(url, metadata="component.json", payload="component.bin", proto="component.proto", ...) {
+auth <- function(url, user, password) {
+    auth_req = list(request_body=list(password=as.character(password)[1L], username=as.character(user)[1L]))
+    res <- POST(url, body=jsonlite::toJSON(auth_req, auto_unbox=TRUE), add_headers(`Content-type` = "application/json"))
+    if (status_code(res) < 400L) { ## OK
+        info <- jsonlite::fromJSON(rawToChar(res$content))
+        if (is.null(info$jwtToken))
+            stop("jwtToken is missing in the authorization response: ", rawToChar(res$content))
+        info$jwtToken
+    } else stop("Authentiaction request failed: ", rawToChar(res$content))
+}
+
+push <- function(url, metadata="component.json", payload="component.bin", proto="component.proto", token, ...) {
+    headers <- list("Content-Type" = "multipart/form-data")
+    if (!missing(token)) headers$Authorization <- token
     req <- POST(url,
                 body=list(
                     metadata=upload_file(metadata, type = "application/json; charset=UTF-8"),
                     schema=upload_file(proto, type = "text/plain; charset=UTF-8"),
                     model=upload_file(payload, type = "application/octet")),
-                add_headers("Content-Type" = "multipart/form-data"), encode="multipart", ...)
+                do.call(httr::add_headers, headers), encode="multipart", ...)
     if (http_error(req)) stop("HTTP error in the POST request: ", content(req))
     invisible(content(req))
 }
