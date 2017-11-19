@@ -104,7 +104,7 @@ protoDefine <- function(name, types) {
     }
 }
 
-run <- function(where=getwd(), file="component.amc", runtime="runtime.json") {
+run <- function(where=getwd(), file="component.amc", runtime="runtime.json", init.only=FALSE) {
     file <- path.expand(file)
     .dinfo(1L, "INFO: starting component in '", where,"', archive:", file, ", runtime:", runtime)
     dir <- tempfile("acumos-runtime")
@@ -140,6 +140,7 @@ run <- function(where=getwd(), file="component.amc", runtime="runtime.json") {
         .dinfo(1L, "INFO: calling initialize()")
         .GlobalEnv$comp$initialize()
     }
+    if (init.only) return(TRUE)
     if (is.function(.GlobalEnv$comp$generate)) {
         .dinfo(1L, "INFO: calling generate()")
 	.GlobalEnv$comp$generate()
@@ -215,6 +216,8 @@ acumos.http <- function(path, query, body, headers) {
             msg <- data2msg(res, fn.meta$output)
             for (url in runtime$output_url)
 	   	send.msg(url, msg)
+            if (isTRUE(runtime$data_response))
+                return(list(msg, "application/octet-stream"))
         }
         list("OK", "text/plain")
     }, error=function(e) paste("ERROR: in execution: ", as.character(e)))

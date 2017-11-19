@@ -12,7 +12,8 @@
   the platform itself.
 }
 \usage{
-run(where = getwd(), file = "component.amc", runtime = "runtime.json")
+run(where = getwd(), file = "component.amc", runtime = "runtime.json",
+    init.only = FALSE)
 data2msg(data, output)
 msg2data(msg, input)
 send.msg(url, payload)
@@ -25,6 +26,8 @@ send.msg(url, payload)
     \code{data2msg}}
   \item{runtime}{either path to the runtime JSON file or a structure
     corresponding to the parsed payload of the file}
+  \item{init.only}{boolean, if \code{TRUE} then the runtime is setup but
+    the actual server/generator is not executed.}
   \item{data}{data to wrap into a message - it is expected to be a list
     (hence a data frame qualifies)}
   \item{output}{name of the proto message type to use}
