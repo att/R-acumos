@@ -1,0 +1,41 @@
+ NEWS
+======
+
+0.2-2
+    o	add run(init.only=TRUE) option to setup the run-time
+	environment without actually running the server
+
+    o	new runtime parameter data_response=TRUE enables direct
+	passing of the output data to the caller. When set the POST
+	request to the functions (like /predict) returns the result in
+	the same request. If nto set (the default) it only retuns
+	success/failure status.    
+
+0.2-1
+    o	add auth() function to obtain authentication token from Acumos.
+
+    o	add push(token=) to use token (obtained form auth()) for
+	authentication purposes.
+
+
+0.2-0
+    o	switch to using bundle model component files (.amc) instead of
+	individual files (.json/.bin/.proto)
+
+    o	addd debugging env var ACUMOS_DEBUG for verbose logging
+
+
+0.1-2
+    o	add support for push()
+
+    o	include non-loaded dependencies
+
+
+0.1-1
+    o	add documentation
+
+    o	add transform, fit, generate and service endpoints
+
+
+0.1-0
+    o	initial version
