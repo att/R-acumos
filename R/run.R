@@ -16,6 +16,7 @@ pkg.deps <- function() {
        np <- na.omit(unique(c(xp, p)))
        np <- np[! np %in% base]
    }
+   p <- unique(gsub("\\s+","",gsub("[ \t(]+.*", "", p))) ## remove versions and whitespaces
    l <- lapply(p, function(o) { d=packageDescription(o); d=d[c("Package", "Version")]; names(d)=c("name","version"); d })
    list(l)
 }
