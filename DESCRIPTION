@@ -4,6 +4,6 @@ Version: 0.2-2
 Author: Simon Urbanek <urbanek@research.att.com>
 Maintainer: Simon Urbanek <urbanek@research.att.com>
 Description: Functions to create and run Acumos models
-License: TBD
+License: Apache License (== 2.0)
 Imports: httr, jsonlite, RProtoBuf, Rserve
 Suggests: randomForest
