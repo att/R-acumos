@@ -235,7 +235,17 @@ auth <- function(url, user, password) {
     } else stop("Authentiaction request failed: ", rawToChar(res$content))
 }
 
-push <- function(url, metadata="component.json", payload="component.bin", proto="component.proto", token, ...) {
+push <- function(url, file="component.amc", token, ...) {
+    ## FIXME: the server currently accepts only multiplart form
+    ## with the uncompressed contents - until the server is fixed to
+    ## support the compoennt bundle properly we have to unpack and push
+    dir <- tempfile("acumos-push")
+    dir.create(dir)
+    on.exit(unlink(dir, TRUE))
+    unzip(file, exdir=dir)
+    metadata <- file.path(dir, "meta.json")
+    payload <- file.path(dir, "component.bin")
+    proto <- file.path(dir, "component.proto")
     headers <- list("Content-Type" = "multipart/form-data")
     if (!missing(token)) headers$Authorization <- token
     req <- POST(url,
