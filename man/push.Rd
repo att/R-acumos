@@ -11,16 +11,13 @@
   \code{push} where required.
 }
 \usage{
-push(url, metadata = "component.json", payload = "component.bin",
-     proto = "component.proto", token, ...)
+push(url, file = "component.amc", token, ...)
 auth(url, user, password)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{url}{URL for the POST request}
-  \item{metadata}{name of the metadata file}
-  \item{payload}{name of the model payload file}
-  \item{proto}{name of the protobuf schema file}
+  \item{file}{component bundle file as created by \code{compose}}
   \item{token}{token obtained from \code{auth} (optional)}
   \item{user}{user name to use for authentication}
   \item{password}{password to use for authentication}
