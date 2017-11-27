@@ -1,6 +1,13 @@
  NEWS
 ======
 
+0.2-4
+    o	update push() to take the bundle and upload in pieces until
+	the server supports bundles.
+
+    o	include schema version in meta.json
+
+
 0.2-3
     o	improve package dependency detection by removing versions and
 	whitespaces
