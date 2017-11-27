@@ -34,7 +34,7 @@ compose <- function(predict, transform, fit, generate, service, initialize, aux=
     dir <- tempfile("acumos-component")
     if (!all(dir.create(dir))) stop("unable to create demporary directory in `",dir,"' to assemble the component bundle")
     
-    meta <- list(name=name,
+    meta <- list(schema="0.4.0", name=name,
          runtime=list(name="r", version="1.0",
 	 	      dependencies = c(list(R=paste(R.version$major, R.version$minor, sep='.')), packages=I(pkg.deps()))),
          methods=list()
