@@ -1,6 +1,12 @@
  NEWS
 ======
 
+0.2-5
+    o	updated to generate meta.json version 0.5.0
+
+    o	added service rpc entry in the proto file
+
+
 0.2-4
     o	update push() to take the bundle and upload in pieces until
 	the server supports bundles.
