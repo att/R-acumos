@@ -46,9 +46,9 @@ compose <- function(predict, transform, fit, generate, service, initialize, aux=
     dir <- tempfile("acumos-component")
     if (!all(dir.create(dir))) stop("unable to create demporary directory in `",dir,"' to assemble the component bundle")
     
-    meta <- list(schema="0.4.0", name=name,
-         runtime=list(name="r", version="1.0",
-	 	      dependencies = c(list(R=paste(R.version$major, R.version$minor, sep='.')), packages=I(pkg.deps()))),
+    meta <- list(schema="acumos.schema.model:0.5.0", name=name,
+         runtime=list(list(name="r", version="1.0",
+		      dependencies = c(list(R=paste(R.version$major, R.version$minor, sep='.')), packages=I(pkg.deps())))),
          methods=list()
     )
     comp <- list(aux = aux, packages = loadedNamespaces())
@@ -57,19 +57,19 @@ compose <- function(predict, transform, fit, generate, service, initialize, aux=
         comp$predict <- predict
         sig <- fetch.types(predict)
 	meta$methods$predict = list(description="predict", input="predictInput", output="predictOutput")
-        proto <- c(proto, protoDefine("predictInput", sig$inputs), protoDefine("predictOutput", sig$outputs))
+        proto <- c(proto, protoDefine("predictInput", sig$inputs), protoDefine("predictOutput", sig$outputs), protoService("predict"))
     }
     if (!missing(transform)) {
         comp$transform <- transform
         sig <- fetch.types(transform)
 	meta$methods$transform = list(description="transform", input="transformInput", output="transformOutput")
-        proto <- c(proto, protoDefine("transformInput", sig$inputs), protoDefine("transformOutput", sig$outputs))
+        proto <- c(proto, protoDefine("transformInput", sig$inputs), protoDefine("transformOutput", sig$outputs), protoService("transform"))
     }
     if (!missing(fit)) {
         comp$fit <- fit
         sig <- fetch.types(fit)
 	meta$methods$fit = list(description="fit", input="fitInput", output="fitOutput")
-        proto <- c(proto, protoDefine("fitInput", sig$inputs), protoDefine("fitOutput", sig$outputs))
+        proto <- c(proto, protoDefine("fitInput", sig$inputs), protoDefine("fitOutput", sig$outputs), protoService("fit"))
     }
     if (!missing(generate)){
         comp$generate <- generate
@@ -108,6 +108,9 @@ protoDefine <- function(name, types) {
           paste0("\trepeated ", type2proto(types), " ", pQ(names(types)), " = ", seq.int(types), ";", collapse="\n"),
           "\n}\n")
 }
+
+protoService <- function(name, inputType = paste0(name, "Input"), outputType = paste0(name, "Output"))
+    paste0("service ", name, "_service {\n\trpc ", name, " (", inputType, ") returns (", outputType, ");\n}\n\n")
 
 .dinfo <- function(level, ..., exp) {
     cd <- Sys.getenv("ACUMOS_DEBUG")
