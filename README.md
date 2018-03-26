@@ -4,7 +4,7 @@
 
 The easy way (recommended):
 
-    install.packages("acumos", repos=c("http://cloud.r-project.org,"http://rforge.net"), dep=T)
+    install.packages("acumos", repos=c("http://cloud.r-project.org","http://rforge.net"), dep=T)
 
 Alternatively, to install from sources: you have to install all dependent packages from CRAN first then
 
