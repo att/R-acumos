@@ -167,11 +167,12 @@ run <- function(where=getwd(), file="component.amc", runtime="runtime.json", ini
     }
 }
 
-send.msg <- function(url, payload) {
+send.msg <- function(url, payload, response=FALSE) {
     .dinfo(3L, "INFO: POST to ", url)
     .dinfo(4L, "INFO: payload: ", exp=print(payload))
     r <- tryCatch(httr::POST(url, body=payload),
                   error=function(e) stop("ERROR: failed to send data to ",url," (from component ", meta$name,"): ", as.character(e)))
+    if (isTRUE(response)) return(r)
     if (identical(r$status_code, 200L)) TRUE else {
          warning("POST to ", url, " was not successful: ", rawToChar(r$content))
          FALSE
@@ -189,6 +190,7 @@ data2msg <- function(data, output) {
 
 msg2data <- function(msg, input) {
     schema <- RProtoBuf::P(input)
+    .dinfo(4L, "INFO: msg2data input: ", exp=print(msg))
     data <- schema$read(msg)
     n <- names(data)
     data <- lapply(n, function(o) data[[o]])

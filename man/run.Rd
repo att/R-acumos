@@ -16,7 +16,7 @@ run(where = getwd(), file = "component.amc", runtime = "runtime.json",
     init.only = FALSE)
 data2msg(data, output)
 msg2data(msg, input)
-send.msg(url, payload)
+send.msg(url, payload, response=FALSE)
 }
 \arguments{
   \item{where}{directory in which the component will be run}
@@ -26,7 +26,7 @@ send.msg(url, payload)
     \code{data2msg}}
   \item{runtime}{either path to the runtime JSON file or a structure
     corresponding to the parsed payload of the file}
-  \item{init.only}{boolean, if \code{TRUE} then the runtime is setup but
+  \item{init.only}{logical, if \code{TRUE} then the runtime is setup but
     the actual server/generator is not executed.}
   \item{data}{data to wrap into a message - it is expected to be a list
     (hence a data frame qualifies)}
@@ -34,6 +34,8 @@ send.msg(url, payload)
   \item{msg}{raw vector containing the message}
   \item{input}{name of the proto message type to use}
   \item{url}{string, URL to send the message to}
+  \item{response}{logical, if \code{TRUE} then the HTTP response object
+    is returned, otherwise only a logical denoting success or failure.}
 }
 \details{
   \code{run} loads and runs the component by providing a service
@@ -58,6 +60,10 @@ send.msg(url, payload)
   \code{data2msg} returns a raw vector constituting the message
 
   \code{msg2data} returns the data repesented by the message
+
+  \code{send.msg} returns \code{TRUE} on success, \code{FALSE} otherwise
+  unless \code{response} is \code{TRUE} in which case the full response
+  object is returned.
 }
 \author{
   Simon Urbanek
@@ -70,6 +76,11 @@ send.msg(url, payload)
 
   The internal Acumos communication protocol is subject to change and
   all of the above functions are hidden.
+
+  If the \code{runtime} list contains an entry \code{data_response=TRUE}
+  then the component also returns the result in the response body (in
+  addition to any output URL specifications). In all other cases the
+  respose is always \code{"OK"} on success and error string on error.
 }
 \seealso{
 \code{\link{compose}}

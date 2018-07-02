@@ -1,6 +1,14 @@
  NEWS
 ======
 
+0.2-6
+    o	added send.msg(..., response=TRUE) to allow more easy testing
+	of REST-style pushes (internal interface only).
+
+    o	minor documentation updates such as mention of data_response
+	run-time option.
+
+
 0.2-5
     o	updated to generate meta.json version 0.5.0
 
