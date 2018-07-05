@@ -123,15 +123,24 @@ protoService <- function(name, inputType = paste0(name, "Input"), outputType = p
 run <- function(where=getwd(), file="component.amc", runtime="runtime.json", init.only=FALSE) {
     file <- path.expand(file)
     .dinfo(1L, "INFO: starting component in '", where,"', archive:", file, ", runtime:", runtime)
-    dir <- tempfile("acumos-runtime")
-    dir.create(dir)
-    on.exit(unlink(dir, TRUE))
-    unzip(file, exdir=dir)
+    if (dir.exists(file)) {
+        .dinfo(2L, "INFO: component is a directory, assuming unpacked content")
+        dir <- file
+    } else {
+        dir <- tempfile("acumos-runtime")
+        dir.create(dir)
+        on.exit(unlink(dir, TRUE))
+        unzip(file, exdir=dir)
+        .dinfo(2L, "INFO: component unpacked in ", dir)
+    }
     metadata <- file.path(dir, "meta.json")
     payload <- file.path(dir, "component.bin")
     proto <- file.path(dir, "component.proto")
-    .dinfo(2L, "INFO: component unpacked in ", dir)
-    if (!file.exists(metadata)) stop("invalid archive (missing meta.json)")
+    c.files <- c(metadata, payload, proto)
+    ok <- file.exists(c.files)
+    if (!all(ok)) stop(paste0("invalid archive (missing ",
+                              paste(basename(c.files[!ok]), collapse=", "),
+                              ")"))
     .GlobalEnv$.http.request <- function(...) {
         setwd(where)
         acumos.http(...)

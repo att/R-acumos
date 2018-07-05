@@ -21,7 +21,8 @@ send.msg(url, payload, response=FALSE)
 \arguments{
   \item{where}{directory in which the component will be run}
   \item{file}{path to the model component file (as created by
-    \code{\link{compose}()}}
+    \code{\link{compose}()}) or a directory containing the
+    unpacked content of the component.}
   \item{payload}{raw vector, message to send - typically constructed by
     \code{data2msg}}
   \item{runtime}{either path to the runtime JSON file or a structure
@@ -73,6 +74,10 @@ send.msg(url, payload, response=FALSE)
   loaded before \code{data2msg()} and \code{msg2data()} are used, e.g.,
   by the virtue of being inside the \code{run()} function or explicitly
   using \code{RProtoBuf::readProtoFiles(proto)}.
+
+  The \code{run()} function can be used only once in a session, because
+  protobuf definitions are global and cannot be overriden without a
+  conflict.
 
   The internal Acumos communication protocol is subject to change and
   all of the above functions are hidden.
