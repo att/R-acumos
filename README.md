@@ -8,7 +8,7 @@ The easy way (recommended):
 
 Alternatively, to install from sources: you have to install all dependent packages from CRAN first then
 
-    git clone git@github.com:s-u/acumos.git
+    git clone git@github.com:att/R-acumos.git acumos
     R CMD build acumos
     R CMD INSTALL acumos_*.tar.gz
 
