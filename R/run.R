@@ -261,10 +261,10 @@ auth <- function(url, user, password) {
     } else stop("Authentiaction request failed: ", rawToChar(res$content))
 }
 
-push <- function(url, file="component.amc", token, ...) {
+push <- function(url, file="component.amc", token, create=TRUE, license, headers, ...) {
     ## FIXME: the server currently accepts only multiplart form
     ## with the uncompressed contents - until the server is fixed to
-    ## support the compoennt bundle properly we have to unpack and push
+    ## support the component bundle properly we have to unpack and push
     dir <- tempfile("acumos-push")
     dir.create(dir)
     on.exit(unlink(dir, TRUE))
@@ -272,14 +272,25 @@ push <- function(url, file="component.amc", token, ...) {
     metadata <- file.path(dir, "meta.json")
     payload <- file.path(dir, "component.bin")
     proto <- file.path(dir, "component.proto")
-    headers <- list("Content-Type" = "multipart/form-data")
+    headers <- if (missing(headers)) list() else as.list(headers)
+    headers[["Content-Type"]] <- "multipart/form-data"
+    headers[["isCreateMicroservice"]] <- if (isTRUE(create)) "true" else "false"
     if (!missing(token)) headers$Authorization <- token
-    req <- POST(url,
-                body=list(
-                    metadata=upload_file(metadata, type = "application/json; charset=UTF-8"),
-                    schema=upload_file(proto, type = "text/plain; charset=UTF-8"),
-                    model=upload_file(payload, type = "application/octet")),
-                do.call(httr::add_headers, headers), encode="multipart", ...)
+    body <- list(
+        metadata = upload_file(metadata, type = "application/json; charset=UTF-8"),
+        schema = upload_file(proto, type = "text/plain; charset=UTF-8"),
+        model = upload_file(payload, type = "application/octet"))
+    aux <- list(...)
+    if (length(names(aux))) for (i in names(aux)) body[[i]] <- aux[[i]]
+    if (!missing(license)) {
+        license <- path.expand(license)
+	if (!file.exists(license))
+	   stop("specified license file `", license, "` does not exist")
+	system(paste("cp",shQuote(license), shQuote(file.path(dir, "license.json"))))
+    }
+    if (file.exists(file.path(dir, "license.json"))) body$license <- upload_file(file.path(dir, "license.json"), "text/plain")
+    req <- POST(url, body=body,
+                do.call(httr::add_headers, headers), encode="multipart")
     if (http_error(req)) stop("HTTP error in the POST request: ", content(req))
     invisible(content(req))
 }

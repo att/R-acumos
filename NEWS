@@ -1,6 +1,14 @@
  NEWS
 ======
 
+0.2-8
+    o	add `create`, `license` and `headers` parameters to `push()`.
+
+    o	change the meaning of `...` in `push()` to supply any additional
+	elements for body of the `POST` request. This allows optional
+	parameters to be added to the onboarding service.
+
+
 0.2-7
     o	allow the `file' argument in run() to be a directory
 	containing the unpacked component.
