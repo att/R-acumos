@@ -29,11 +29,16 @@ pushFromSource(
 
 \item{create}{logical, isCreateMicroservice parameter, see Acumos onboarding documentation}
 
-\item{license}{optional string, name of a file to supply as the license. If not specified push() will also try to locate a license.json file in the component bundle if present.}
+\item{license}{optional string, name of a file to supply as the license. If not specified push() 
+will also try to locate a license.json file in the component bundle if present.}
 
-\item{headers}{optional, named list or named character vector of HTTP headers that are to be added to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the documentation of the onboarding server for supported additional headers and their meaning.}
+\item{headers}{optional, named list or named character vector of HTTP headers that are to be added 
+to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult 
+the documentation of the onboarding server for supported additional headers and their meaning.}
 
-\item{...}{optional, named list or named character vector of HTTP headers that are to be added to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the documentation of the onboarding server for supported additional headers and their meaning.}
+\item{...}{optional, named list or named character vector of HTTP headers that are to be added to 
+the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the 
+documentation of the onboarding server for supported additional headers and their meaning.}
 }
 \value{
 invisibly, result of the request (may change in the future)
