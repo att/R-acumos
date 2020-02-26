@@ -53,7 +53,17 @@ composeFromSource<-function(file="acumos.R",
                           name = "R Component", outputfile = "component.zip", addSource=T){
   comp<-new.env()
   exprs <- parse(file)
-  eval(exprs, envir= comp)
+  tryCatch(
+    {
+      eval(exprs, envir= comp)
+    },
+    error=function(cond) {
+      message(paste0("Please verify the script '", file, "' works. 
+                     Please refer to the package documentation: help(package='acumos')"))
+      message("Error message while executing the file:")
+      stop(cond)
+    }
+  ) 
   verbs<-ls(envir = comp)[ls(envir = comp)%in%
                             paste(c("acumos"),
                                   c("predict","transform","fit","generate","service","initialize"), 
@@ -80,9 +90,14 @@ composeFromSource<-function(file="acumos.R",
 #' @param addSource boolean, to add source file to the (ZIP) bundle or not
 #' @param token token obtained from auth (optional)
 #' @param create logical, isCreateMicroservice parameter, see Acumos onboarding documentation
-#' @param license optional string, name of a file to supply as the license. If not specified push() will also try to locate a license.json file in the component bundle if present.
-#' @param headers optional, named list or named character vector of HTTP headers that are to be added to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the documentation of the onboarding server for supported additional headers and their meaning.
-#' @param ... optional, named list or named character vector of HTTP headers that are to be added to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the documentation of the onboarding server for supported additional headers and their meaning.
+#' @param license optional string, name of a file to supply as the license. If not specified push() 
+#' will also try to locate a license.json file in the component bundle if present.
+#' @param headers optional, named list or named character vector of HTTP headers that are to be added 
+#' to the request. NOTE: the meaning of optional headers depends on the onboarding server so consult 
+#' the documentation of the onboarding server for supported additional headers and their meaning.
+#' @param ... optional, named list or named character vector of HTTP headers that are to be added to 
+#' the request. NOTE: the meaning of optional headers depends on the onboarding server so consult the 
+#' documentation of the onboarding server for supported additional headers and their meaning.
 #'
 #' @return invisibly, result of the request (may change in the future)
 #'
