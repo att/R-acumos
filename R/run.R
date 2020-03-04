@@ -297,7 +297,7 @@ push <- function(url, file="component.amc", token, create=TRUE, license, headers
     if (http_error(req)) stop("HTTP error in the POST request: ", content(req))
     if (content(req)$status=="SUCCESS") {
                 cat("Model pushed successfully to :",url,"\n")
-                if(headers[["isCreateMicroservice"]]=="true") {cat("Acumos model docker image successfully created :",content(req)$dockerImageUri,"\n")
+                if(headers[["isCreateMicroservice"]]=="true") {cat("Acumos model docker image successfully created :",content(req)$dockerImageUri,"\n")}
 		}
     invisible(content(req))
 }
