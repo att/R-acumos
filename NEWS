@@ -1,6 +1,15 @@
  NEWS
 ======
 
+0.3-0
+    o	add `composeFromSource()` and `pushFromSource()` functions, enabling 
+    respectively to compose and to push a bundle from an R file (considered 
+    as the component source) in which all the functions and auxiliary 
+    objects needed to compose the bundle are defined.
+
+    o	change `push()` to look up and include in the POST request a potential 
+    `component.R` file contained in the bundle.
+
 0.2-8
     o	add `create`, `license` and `headers` parameters to `push()`.
 

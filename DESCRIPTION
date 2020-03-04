@@ -1,9 +1,11 @@
 Package: acumos
 Title: Acumos R interface
-Version: 0.2-8
-Author: Simon Urbanek <urbanek@research.att.com>
+Version: 0.3-0
+Authors@R: c(person("Simon", "Urbanek", role = c("aut", "cre"), email = "urbanek@research.att.com"),
+             person("Alassane", "Samba", role = "ctb", email = "alassane.samba@orange.com"))
 Maintainer: Simon Urbanek <urbanek@research.att.com>
 Description: Functions to create and run Acumos models.
 License: Apache License (== 2.0)
 Imports: httr, jsonlite, RProtoBuf, Rserve
 Suggests: randomForest
+RoxygenNote: 7.0.2
