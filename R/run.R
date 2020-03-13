@@ -273,16 +273,21 @@ push <- function(url, file="component.amc", token, create=TRUE, license, headers
     payload <- file.path(dir, "component.bin")
     proto <- file.path(dir, "component.proto")
     addSource<-file.exists(file.path(dir, "component.R"))
-    if(addSource) rfile <- file.path(dir, "component.R")
+    if(addSource){
+      source <- upload_file(file.path(dir, "component.R"), type = "text/plain; charset=UTF-8")
+    }else{
+      source <- NULL
+    }
     headers <- if (missing(headers)) list() else as.list(headers)
     headers[["Content-Type"]] <- "multipart/form-data"
     headers[["isCreateMicroservice"]] <- if (isTRUE(create)) "true" else "false"
     if (!missing(token)) headers$Authorization <- token
-    body <- c(list(
+    body <- list(
       metadata = upload_file(metadata, type = "application/json; charset=UTF-8"),
       schema = upload_file(proto, type = "text/plain; charset=UTF-8"),
-      model = upload_file(payload, type = "application/octet")),
-      source = c(NULL,upload_file(rfile, type = "text/plain; charset=UTF-8"))[addSource])
+      model = upload_file(payload, type = "application/octet"),
+      source = source)
+    body <- body[!sapply(body, is.null)]
     aux <- list(...)
     if (length(names(aux))) for (i in names(aux)) body[[i]] <- aux[[i]]
     if (!missing(license)) {

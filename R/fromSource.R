@@ -76,7 +76,7 @@ composeFromSource<-function(file="acumos.R",
   dir <- tempfile("acumos-tmp")
   dir.create(dir)
   on.exit(unlink(dir, TRUE))
-  file.link(file,file.path(dir,"component.R"))
+  file.copy(file,file.path(dir,"component.R"))
   if(addSource) zip(zipfile = outputfile, files = file.path(dir,"component.R"), extras = "-j")
 }
 
